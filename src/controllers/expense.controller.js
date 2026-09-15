@@ -5,8 +5,10 @@ import Expense from '../model/expense.model.js'
 const expenseCreate = async (req, res) => {
     try {
         const { amount, title } = req.body
+        const user = req.userId
 
         const userExpense = await Expense.create({
+            user,
             amount,
             title
         })
@@ -20,7 +22,7 @@ const expenseCreate = async (req, res) => {
 
 const getExpense = async(req, res)=>{
     try{
-        const allExpense = await Expense.find()
+        const allExpense = await Expense.find({user:req.userId})
         res.status(200).send(allExpense)
     }catch(error){
         console.log("Error in getting expense", error)
@@ -30,13 +32,13 @@ const getExpense = async(req, res)=>{
 
 const putExpense = async(req, res)=>{
     try{
-        const id = req.params.id 
+        const id = req.params.id
         const {amount, title} = req.body
         const updatedData = {
             amount,
             title
         }    
-        const updatedExpense = await Expense.findByIdAndUpdate(id, updatedData,
+        const updatedExpense = await Expense.findOneAndUpdate({_id:id,user:req.userId}, updatedData,
             {new:true, runValidators:true}
         )
         if(updatedExpense===null){
@@ -63,7 +65,7 @@ const patchExpense = async(req, res)=>{
         if("title" in req.body){
             updatedData.title = title
         }
-        const updateExpense = await Expense.findByIdAndUpdate(id, updatedData, {new:true,runValidators:true})
+        const updateExpense = await Expense.findOneAndUpdate({_id:id, user:req.userId}, updatedData, {new:true,runValidators:true})
         if(updateExpense===null){
             res.status(404).send("Expense not Found")
         }else{
@@ -79,7 +81,7 @@ const patchExpense = async(req, res)=>{
 const deleteExpense = async(req,res) =>{
     try{
         const id = req.params.id
-        const deletedExpense = await Expense.findByIdAndDelete(id)
+        const deletedExpense = await Expense.findOneAndDelete({_id:id,user:req.userId})
         if(deletedExpense===null){
             res.status(404).send("Expense not Found")
         }else{

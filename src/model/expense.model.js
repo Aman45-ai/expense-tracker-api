@@ -1,20 +1,26 @@
 import mongoose from "mongoose"
 
 const expenseSchema = new mongoose.Schema({
-    amount:{
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"User",
+        required:true
+    },
+    amount: {
         type: Number,
-        required: true,
-        validate:{
-            validator:(value) => {
-                return value>0
+        required: [true, "Amount is required"],
+        validate: {
+            validator: (value) => {
+                return value > 0
             },
-            message:"Amont must be greater than 0"
+            message: "Amont must be greater than 0"
         }
     },
-    title:{
+    title: {
         type: String,
-        required: true,
-    }
+        required: [true, "Title is required"],
+    },
+
 })
 
 const Expense = mongoose.model('Expense', expenseSchema)
