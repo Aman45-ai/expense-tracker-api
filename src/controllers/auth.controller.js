@@ -12,7 +12,7 @@ const signup = async (req, res) => {
         })
 
         if(emailCheck!==null){
-            return res.status(400).send("Email is already regestered with us")
+            return res.status(400).send("Email is already registered with us")
         }
 
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
@@ -25,7 +25,7 @@ const signup = async (req, res) => {
             email,
             password: passwordHash
         })
-        res.status(201).send("User regesterd Successfully")
+        res.status(201).send("User registerd Successfully")
         
     }catch(error){
         console.log("Error in signingup", error)
