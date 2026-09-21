@@ -1,4 +1,5 @@
 import { LayoutDashboard, Receipt, LogOut, WalletCards } from "lucide-react"
+import { NavLink, useNavigate } from "react-router-dom"
 
 const Sidebar = () => {
     return (
@@ -14,15 +15,12 @@ const Sidebar = () => {
             </div>
 
             <nav className='flex-1 p-4 space-y-2'>
-                <button className='w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-white/10 text-white text-sm'>
+                <NavLink to='/' className='w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-white/10 text-white text-sm' >
                     <LayoutDashboard size={18}/>
                     Dashboard
-                </button>
+                </NavLink>
 
-                <button className='w-full flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-400 hover:bg-white/5 hover:text-white text-sm'>
-                    <Receipt size={18}/>
-                    Expenses
-                </button>
+                
             </nav>
 
             <div className='p-4 border-t border-white/10'>

@@ -2,19 +2,24 @@ import { WalletCards } from "lucide-react"
 import AuthInput from "../auth/AuthInput"
 import authapi from '../../services/auth.service.js'
 import { useForm } from "react-hook-form"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { toast } from "sonner"
 import { useNavigate } from "react-router-dom"
+import { AuthContext } from "../../context/AuthContext.jsx"
 
 const Login = () => {
     const { register, handleSubmit, formState: { errors } } = useForm()
     const [isloading, setIsLoading] = useState(false)
     const navigate = useNavigate()
+    const {setIsLoggedIn, setAccessToken} = useContext(AuthContext)
     const onSubmit = async(data) => {
         try {
             setIsLoading(true)
             const response = await authapi.loginapi(data)
             toast.success(response.data.message)
+            setAccessToken(response.data.accessToken)
+            localStorage.setItem('accessToken',response.data.accessToken)
+            setIsLoggedIn(true)
             navigate('/')
         }catch(error){
             toast.error(error.response.data)

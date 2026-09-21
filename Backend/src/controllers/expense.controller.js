@@ -12,7 +12,7 @@ const expenseCreate = async (req, res) => {
             amount,
             title
         })
-        res.status(201).send(userExpense)
+        res.status(201).send("Expense created Successfully")
 
     } catch (error) {
         console.log("Error in expense creation", error)
