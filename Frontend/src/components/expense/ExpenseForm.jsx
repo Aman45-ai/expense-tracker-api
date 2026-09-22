@@ -4,7 +4,7 @@ import { toast } from "sonner"
 import expenseapi from '../../services/expense.service'
 import { useState } from "react"
 
-const ExpenseForm = () => {
+const ExpenseForm = ({fetchExpense}) => {
     const { register, handleSubmit, formState: { errors },reset } = useForm({
         mode: "onSubmit",
         reValidateMode: "onChange"
@@ -13,6 +13,7 @@ const ExpenseForm = () => {
         try {
             const response = await expenseapi.createExpense(data)
             toast.success(response.data)
+            fetchExpense()
             reset()
         } catch (error) {
             toast.error(error.response.data)

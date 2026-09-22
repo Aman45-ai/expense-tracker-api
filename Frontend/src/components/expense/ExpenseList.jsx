@@ -1,12 +1,14 @@
+
 import ExpenseCard from "./ExpenseCard"
 
-const ExpenseList = () => {
+const ExpenseList = ({expenses,fetchExpense}) => {
     return (
         <div className='space-y-3'>
-            <ExpenseCard title='Swiggy Order' category='Food' date='Today' amount='420'/>
-            <ExpenseCard title='Metro Recharge' category='Transport' date='Yesterday' amount='300'/>
-            <ExpenseCard title='Amazon Purchase' category='Shopping' date='Sep 17' amount='1,299'/>
-            <ExpenseCard title='Netflix' category='Entertainment' date='Sep 15' amount='649'/>
+            {expenses.map((values)=>{
+                return(
+                    <ExpenseCard  key={values._id}  _id={values._id} title={values.title} amount={values.amount} fetchExpense={fetchExpense}/>
+                )
+            })}
         </div>
     )
 }

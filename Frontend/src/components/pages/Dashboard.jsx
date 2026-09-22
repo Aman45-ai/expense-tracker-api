@@ -4,9 +4,20 @@ import Topbar from "../layout/Topbar"
 import StatCard from "../dashboard/StatCard"
 import ExpenseList from "../expense/ExpenseList"
 import ExpenseForm from "../expense/ExpenseForm"
+import { useEffect, useState } from "react"
+import expenseapi from "../../services/expense.service"
 
 
 const Dashboard = () => {
+    const [expenses,setExpenses] = useState([])
+    const fetchExpense = async()=>{
+            const response = await expenseapi.getExpense()
+            setExpenses(response.data)
+        }
+    
+    useEffect(()=>{
+        fetchExpense()
+    },[])
     return (
         <div className='min-h-screen bg-[#09090b] text-white'>
             <Sidebar />
@@ -53,19 +64,15 @@ const Dashboard = () => {
                         <div className='bg-[#111113] border border-white/10 rounded-2xl p-6'>
                             <div className='flex items-center justify-between mb-6'>
                                 <div>
-                                    <h3 className='text-lg font-semibold'>Recent Expenses</h3>
-                                    <p className='text-sm text-zinc-500 mt-1'>Your latest transactions</p>
+                                    <h3 className='text-lg font-semibold'>Expenses</h3>
+                                    <p className='text-sm text-zinc-500 mt-1'>Your transactions</p>
                                 </div>
-
-                                <button className='text-sm text-emerald-400 hover:text-emerald-300'>
-                                    View all
-                                </button>
                             </div>
 
-                            <ExpenseList />
+                            <ExpenseList expenses={expenses} fetchExpense={fetchExpense}/>
                         </div>
 
-                        <ExpenseForm />
+                        <ExpenseForm fetchExpense={fetchExpense}/>
                     </section>
                 </div>
             </main>
