@@ -44,7 +44,7 @@ const putExpense = async(req, res)=>{
         if(updatedExpense===null){
             res.status(404).send("Expense not Found")
         }else{
-            res.status(200).send(updatedExpense)
+            res.status(200).send("Expense Updated Successfully")
         }
         
 
@@ -69,7 +69,7 @@ const patchExpense = async(req, res)=>{
         if(updateExpense===null){
             res.status(404).send("Expense not Found")
         }else{
-            res.status(200).send(updateExpense)
+            res.status(200).send("Expense Updated Successfully")
         }
 
     }catch(error){
@@ -85,7 +85,7 @@ const deleteExpense = async(req,res) =>{
         if(deletedExpense===null){
             res.status(404).send("Expense not Found")
         }else{
-            res.status(200).send(deletedExpense)
+            res.status(200).send("Expense Deleted Successfully")
         }
 
     }catch(error){
