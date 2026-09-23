@@ -7,4 +7,9 @@ const signupapi = (data) => {
 const loginapi = (data) =>{
     return api.post('/auth/login',data)
 }
-export default {signupapi, loginapi}
+
+const logoutapi = () => {
+    return api.post('/auth/logout')
+}
+
+export default {signupapi, loginapi, logoutapi}

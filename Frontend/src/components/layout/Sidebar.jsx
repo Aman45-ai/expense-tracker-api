@@ -1,7 +1,27 @@
 import { LayoutDashboard, Receipt, LogOut, WalletCards } from "lucide-react"
 import { NavLink, useNavigate } from "react-router-dom"
+import { useContext } from "react"
+import { AuthContext } from "../../context/AuthContext"
+import authapi from "../../services/auth.service"
+import { toast } from "sonner"
 
 const Sidebar = () => {
+    const { setIsLoggedIn, setAccessToken } = useContext(AuthContext)
+    const navigate = useNavigate()
+
+    const handleLogout = async () => {
+        try {
+            await authapi.logoutapi()
+            localStorage.removeItem("accessToken")
+            setAccessToken(null)
+            setIsLoggedIn(false)
+            navigate("/login")
+            toast.success("Logout Successfully")
+        } catch (error) {
+            toast.error(error.response?.data || "Logout failed")
+        }
+    }
+
     return (
         <aside className='hidden lg:flex w-64 min-h-screen bg-[#0d0d0f] border-r border-white/10 flex-col fixed left-0 top-0'>
             <div className='h-20 px-6 flex items-center gap-3 border-b border-white/10'>
@@ -15,16 +35,17 @@ const Sidebar = () => {
             </div>
 
             <nav className='flex-1 p-4 space-y-2'>
-                <NavLink to='/' className='w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-white/10 text-white text-sm' >
+                <NavLink to='/' className='w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-white/10 text-white text-sm'>
                     <LayoutDashboard size={18}/>
                     Dashboard
                 </NavLink>
-
-                
             </nav>
 
             <div className='p-4 border-t border-white/10'>
-                <button className='w-full flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-400 hover:bg-red-500/10 hover:text-red-400 text-sm'>
+                <button
+                    onClick={handleLogout}
+                    className='w-full flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-400 hover:bg-red-500/10 hover:text-red-400 text-sm'
+                >
                     <LogOut size={18}/>
                     Logout
                 </button>

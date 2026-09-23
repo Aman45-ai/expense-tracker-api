@@ -1,7 +1,6 @@
-import { IndianRupee, TrendingDown, ReceiptText, Wallet } from "lucide-react"
+
 import Sidebar from "../layout/Sidebar"
 import Topbar from "../layout/Topbar"
-import StatCard from "../dashboard/StatCard"
 import ExpenseList from "../expense/ExpenseList"
 import ExpenseForm from "../expense/ExpenseForm"
 import { useEffect, useState } from "react"
@@ -26,39 +25,6 @@ const Dashboard = () => {
                 <Topbar />
 
                 <div className='p-6 lg:p-8 space-y-8'>
-                    <section className='grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4'>
-                        <StatCard
-                            title='Total Balance'
-                            value='₹48,250'
-                            subtitle='Available balance'
-                            icon={<Wallet size={18}/>}
-                            accent='bg-emerald-500/10 text-emerald-400'
-                        />
-
-                        <StatCard
-                            title='Total Expenses'
-                            value='₹12,480'
-                            subtitle='This month'
-                            icon={<TrendingDown size={18}/>}
-                            accent='bg-red-500/10 text-red-400'
-                        />
-
-                        <StatCard
-                            title='Transactions'
-                            value='38'
-                            subtitle='This month'
-                            icon={<ReceiptText size={18}/>}
-                            accent='bg-blue-500/10 text-blue-400'
-                        />
-
-                        <StatCard
-                            title='Average Expense'
-                            value='₹328'
-                            subtitle='Per transaction'
-                            icon={<IndianRupee size={18}/>}
-                            accent='bg-purple-500/10 text-purple-400'
-                        />
-                    </section>
 
                     <section className='grid grid-cols-1 xl:grid-cols-[1fr_360px] gap-6'>
                         <div className='bg-[#111113] border border-white/10 rounded-2xl p-6'>

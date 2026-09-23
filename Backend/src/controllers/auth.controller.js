@@ -51,10 +51,16 @@ const login = async (req, res) => {
         if (passwordMatch) {
             const refreshToken = jwt.sign({ userId: emailMatch._id }, config.JWT_REFRESH_SECRET, { expiresIn: '7d' })
             const accessToken = jwt.sign({ userId: emailMatch._id }, config.JWT_SECRET, { expiresIn: '2h' })
+
+            res.cookie("refreshToken", refreshToken, {
+                httpOnly: true,
+                secure: false,
+                sameSite: "lax"
+            })
+
             res.status(200).send({
                 message: "Login Sucessfull",
-                accessToken,
-                refreshToken
+                accessToken
             })
         } else {
             res.status(400).send("Please enter correct credentials")
@@ -67,27 +73,31 @@ const login = async (req, res) => {
 }
 
 const newToken = async (req, res) => {
-    const refreshToken = req.header('Authorization')
+    const refreshToken = req.cookies.refreshToken
 
-    let token
-
-    if (refreshToken) {
-        const parts = refreshToken.split(" ")
-        token = parts[1]
-    }
 
     try {
-        const verification = jwt.verify(token, config.JWT_REFRESH_SECRET)
-        const generateAccessToken = jwt.sign({userId: verification.userId},config.JWT_SECRET,{expiresIn:'2h'})
+        const verification = jwt.verify(refreshToken, config.JWT_REFRESH_SECRET)
+        const generateAccessToken = jwt.sign({ userId: verification.userId }, config.JWT_SECRET, { expiresIn: '2h' })
         res.status(200).send({
-                message: "New Access Token generated",
-                accessToken: generateAccessToken
-            })
-    }catch(error){
-        console.log("Error in generating access token",error)
+            message: "New Access Token generated",
+            accessToken: generateAccessToken
+        })
+    } catch (error) {
+        console.log("Error in generating access token", error)
         res.status(500).send("Internal Server Error")
     }
-    
+
 }
 
-export default { signup, login, newToken }
+const logout = async (req, res) => {
+    res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax"
+    })
+
+    res.status(200).send("Logout Successfully")
+}
+
+export default { signup, login, newToken, logout }
